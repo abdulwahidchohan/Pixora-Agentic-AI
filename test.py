@@ -1,7 +1,7 @@
-class Test:
-    x: int | None = None
+from pydantic.v1 import BaseSettings
+from typing import Optional
 
-import pprint
-f = Test.__dict__['__annotate_func__']
-print("format 1:", f(1))
-print("format 2:", f(2))
+class Test(BaseSettings):
+    x: Optional[int] = None
+
+print("BaseSettings success")
