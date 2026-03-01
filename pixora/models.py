@@ -220,6 +220,7 @@ class UserRequest(BaseModel):
     user_id: str
     session_id: str
     prompt: str
+    system_prompt: Optional[str] = None
     style_preferences: Dict[str, Any] = Field(default_factory=dict)
     timestamp: Optional[datetime] = None
     

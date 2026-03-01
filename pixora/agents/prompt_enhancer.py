@@ -77,6 +77,8 @@ class PromptEnhancer:
             raw_prompt = message.payload.get("raw_prompt", "")
             style = message.payload.get("style", ImageStyle.PHOTOREALISTIC)
             category = message.payload.get("category", ImageCategory.OTHER)
+            system_prompt = message.payload.get("system_prompt", config.system_prompt)
+            theme = message.payload.get("theme", config.default_theme)
             seed = message.payload.get("seed")
             
             # Get user preferences from memory
@@ -88,6 +90,8 @@ class PromptEnhancer:
                 style=style,
                 category=category,
                 user_preferences=user_preferences,
+                system_prompt=system_prompt,
+                theme=theme,
                 seed=seed
             )
             
@@ -143,6 +147,8 @@ class PromptEnhancer:
         style: ImageStyle,
         category: ImageCategory,
         user_preferences: Dict[str, Any],
+        system_prompt: Optional[str] = None,
+        theme: Optional[str] = None,
         seed: Optional[int] = None
     ) -> str:
         """
@@ -163,6 +169,11 @@ class PromptEnhancer:
             enhancement_context = self._build_enhancement_context(
                 raw_prompt, style, category, user_preferences
             )
+            
+            if theme and theme != "none":
+                enhancement_context += f", theme: {theme}"
+            if system_prompt:
+                enhancement_context += f", system instructions: {system_prompt}"
             
             # Use OpenAI to enhance the prompt
             enhanced_prompt = await self._ai_enhance_prompt(
@@ -401,7 +412,8 @@ class PromptEnhancer:
         self,
         raw_prompt: str,
         style_preferences: Dict[str, Any],
-        user_id: str
+        user_id: str,
+        system_prompt: Optional[str] = None
     ) -> "EnhancedPrompt":
         """
         Enhanced prompt using the existing handle method.
@@ -423,7 +435,9 @@ class PromptEnhancer:
             payload={
                 "raw_prompt": raw_prompt,
                 "style": style_preferences.get("style", ImageStyle.PHOTOREALISTIC),
-                "category": ImageCategory.OTHER
+                "category": ImageCategory.OTHER,
+                "theme": style_preferences.get("theme", config.default_theme),
+                "system_prompt": system_prompt or config.system_prompt
             }
         )
         

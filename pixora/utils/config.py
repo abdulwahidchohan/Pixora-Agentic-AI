@@ -38,6 +38,8 @@ class Config(BaseSettings):
     debug_mode: bool = Field(False, env="DEBUG_MODE")
     memory_db_path: str = Field("./data/memory", env="MEMORY_DB_PATH")
     session_timeout_hours: int = Field(24, env="SESSION_TIMEOUT_HOURS")
+    default_theme: str = Field("cinematic", env="DEFAULT_THEME")
+    system_prompt: str = Field("Masterpiece, best quality, ultra detailed, highly aesthetic, 8k resolution", env="SYSTEM_PROMPT")
     
     # Security & Rate Limiting
     max_images_per_request: int = Field(4, env="MAX_IMAGES_PER_REQUEST")

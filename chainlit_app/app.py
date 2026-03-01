@@ -15,6 +15,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 import chainlit as cl
 from chainlit import user_session, on_chat_start, on_message, on_chat_end
+from chainlit.input_widget import Select, TextInput
 
 from pixora.coordinator import Coordinator
 from pixora.models import UserRequest, WorkflowResult
@@ -76,6 +77,24 @@ Ready to create something amazing? Just describe your vision! 🚀
         user_session.set("session_id", session_id)
         user_session.set("coordinator", coordinator)
         
+        # Setup chat settings
+        settings = await cl.ChatSettings(
+            [
+                Select(
+                    id="default_theme",
+                    label="Default Theme",
+                    values=["cinematic", "photorealistic", "anime", "cyberpunk", "fantasy", "watercolor", "none"],
+                    initial_index=0,
+                ),
+                TextInput(
+                    id="system_prompt",
+                    label="System Prompt",
+                    initial=config.system_prompt,
+                )
+            ]
+        ).send()
+        user_session.set("settings", settings)
+        
         logger.info(f"Chat session started for user {user_id}")
         
     except Exception as e:
@@ -84,6 +103,11 @@ Ready to create something amazing? Just describe your vision! 🚀
             content="❌ Sorry, I encountered an error while starting the session. Please try again.",
             author="System"
         ).send()
+
+@cl.on_settings_update
+async def setup_agent(settings):
+    """Handle settings updates."""
+    user_session.set("settings", settings)
 
 @on_message
 async def main(message: cl.Message):
@@ -108,12 +132,18 @@ async def main(message: cl.Message):
             author="Pixora AI"
         ).send()
         
+        # Extract settings
+        settings = user_session.get("settings", {})
+        default_theme = settings.get("default_theme", config.default_theme)
+        system_prompt = settings.get("system_prompt", config.system_prompt)
+        
         # Create user request
         user_request = UserRequest(
             user_id=user_id,
             session_id=session_id,
             prompt=message.content,
-            style_preferences={},  # TODO: Extract from user preferences
+            system_prompt=system_prompt,
+            style_preferences={"theme": default_theme},  # Added theme to style preferences
             timestamp=message.created_at
         )
         

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina - AI Image Generator</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <main class="app-container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <h1>Lumina</h1>
+            </div>
+            <p>Transform your imagination into visual masterpieces instantly.</p>
+        </header>
+
+        <div class="generator-panel glass-panel">
+            <div class="input-group">
+                <label for="prompt-input">Your Vision</label>
+                <div class="textarea-wrapper">
+                    <textarea id="prompt-input" placeholder="A futuristic cyberpunk city glowing in the rain..." rows="3"></textarea>
+                    <button id="generate-btn" class="primary-btn">
+                        <span>Generate</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div class="control-group">
+                    <label for="theme-select"><i class="fa-solid fa-palette"></i> Default Theme</label>
+                    <select id="theme-select">
+                        <option value="cinematic">Cinematic (Default)</option>
+                        <option value="anime">Anime / Manga style</option>
+                        <option value="photorealistic">Photorealistic</option>
+                        <option value="cyberpunk">Cyberpunk / Neon</option>
+                        <option value="fantasy">High Fantasy Illustration</option>
+                        <option value="watercolor">Watercolor Painting</option>
+                        <option value="none">No specific theme</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-container" id="result-container">
+            <div class="empty-state">
+                <i class="fa-regular fa-image"></i>
+                <p>Your creation will appear here</p>
+            </div>
+            
+            <div class="loading-state hidden">
+                <div class="spinner"></div>
+                <p>Manifesting your vision...</p>
+                <p class="system-prompt-hint" id="system-prompt-hint"></p>
+            </div>
+            
+            <div class="image-wrapper hidden">
+                <img id="generated-image" src="" alt="Generated artwork">
+                <div class="image-overlay">
+                    <button class="icon-btn" id="download-btn" title="Download Image">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                    <button class="icon-btn" id="fullscreen-btn" title="View Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

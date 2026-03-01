@@ -29,7 +29,7 @@ black>=23.0.0
 flake8>=6.0.0
 
 # Optional: Vertex AI (Google Cloud)
-google-cloud-aiplatform>=1.35.0
+# google-cloud-aiplatform>=1.35.0
 
 # Optional: Additional Image Generation APIs
 replicate>=0.20.0

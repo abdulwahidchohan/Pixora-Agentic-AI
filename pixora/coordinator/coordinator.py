@@ -148,7 +148,8 @@ class Coordinator:
             enhanced_prompt = await self.prompt_enhancer.enhance_prompt(
                 user_request.prompt,
                 user_request.style_preferences,
-                user_request.user_id
+                user_request.user_id,
+                system_prompt=user_request.system_prompt
             )
             self.logger.info("Prompt enhanced successfully")
             return enhanced_prompt
